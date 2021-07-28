@@ -147,6 +147,7 @@ static void gpset(BCM2835GpioState *s,
     for (i = 0; i < count; i++) {
         if ((changes & cur) && (gpfsel_is_out(s, start + i))) {
             qemu_set_irq(s->out[start + i], 1);
+            fprintf(stderr, "gpset %u\n", start + i);
         } else if ((changes & cur) && ren_detect(s, start + i)) {
             /* If this is an input and must check rising edge */
             int irqline = 0;
@@ -178,6 +179,7 @@ static void gpclr(BCM2835GpioState *s,
     for (i = 0; i < count; i++) {
         if ((changes & cur) && (gpfsel_is_out(s, start + i))) {
             qemu_set_irq(s->out[start + i], 0);
+            fprintf(stderr, "gpclr %u\n", start + i);
         } else if ((changes & cur) && fen_detect(s, start + i)) {
             /* If this is an input we must check falling edge */
             int irqline = 0;
